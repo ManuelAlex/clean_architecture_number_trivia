@@ -6,10 +6,11 @@ import 'package:number_trivia/features/number_trivia/domain/entities/number_triv
 class NumberTriviaState {
   final NumberTriviaResult? result;
   final NumberTrivia? numberTrivia;
-
   final bool isLoading;
+  final bool networkFailure;
   final String? erroMessage;
   const NumberTriviaState({
+    required this.networkFailure,
     required this.numberTrivia,
     required this.result,
     this.erroMessage,
@@ -19,11 +20,13 @@ class NumberTriviaState {
       : isLoading = false,
         numberTrivia = null,
         erroMessage = null,
+        networkFailure = false,
         result = null;
 
   const NumberTriviaState.loading()
       : isLoading = true,
         erroMessage = null,
+        networkFailure = false,
         numberTrivia = null,
         result = null;
 
@@ -32,17 +35,9 @@ class NumberTriviaState {
   ) =>
       NumberTriviaState(
         numberTrivia: numberTrivia,
+        networkFailure: false,
         result: result,
         isLoading: isLoading,
-      );
-
-  NumberTriviaState copyWIthNumberTriviaStateFailure({
-    required NumberTrivia numberTrivia,
-  }) =>
-      NumberTriviaState(
-        numberTrivia: numberTrivia,
-        result: result,
-        isLoading: false,
       );
 
   @override

@@ -22,6 +22,7 @@ Future<void> init() async {
       getConcreteNumberTriviaUsecase: sl(),
       getRandomNumberTriviaUsecase: sl(),
       stringToIntConverter: sl(),
+      networkInfo: sl(),
     ),
   );
 

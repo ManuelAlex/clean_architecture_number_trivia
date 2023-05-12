@@ -14,37 +14,16 @@ class GetRandomNumberTriviaUsecase implements Usecase<NumberTrivia, NoParams> {
   Future<NumberTrivaReturnResult> call({
     NoParams? params,
   }) async {
-    final result = await repository.getRandomNumberTriavia();
-    print(result.numberTrivia!.triviaText + 'usecase GetRand');
-    switch (result.result) {
-      case NumberTriviaResult.success:
-        return NumberTrivaReturnResult(
+    try {
+      final result = await repository.getRandomNumberTriavia();
+      return NumberTrivaReturnResult(
           numberTrivia: result.numberTrivia,
-          result: NumberTriviaResult.success,
-        );
-
-      case NumberTriviaResult.isOffLine:
-        return NumberTrivaReturnResult(
-          numberTrivia: result.numberTrivia,
-          result: NumberTriviaResult.isOffLine,
-        );
-
-      case NumberTriviaResult.serverFailures:
-        return NumberTrivaReturnResult(
-          numberTrivia: result.numberTrivia,
-          result: NumberTriviaResult.serverFailures,
-        );
-
-      case NumberTriviaResult.cacheFailures:
-        return NumberTrivaReturnResult(
-          numberTrivia: result.numberTrivia,
-          result: NumberTriviaResult.cacheFailures,
-        );
-      default:
-        return NumberTrivaReturnResult(
-          numberTrivia: result.numberTrivia,
-          result: NumberTriviaResult.success,
-        );
+          result: NumberTriviaResult.success);
+    } catch (_) {
+      return const NumberTrivaReturnResult(
+        numberTrivia: null,
+        result: NumberTriviaResult.serverFailures,
+      );
     }
   }
 }

@@ -31,7 +31,6 @@ class NumberTriviaRepositoryImpl extends NumberTriaviaRepository {
     final result = await _getConcreteOrRandomNumberTriavia(
       getConOrRand: remoteDataSource.getRandomNumberTriavia(),
     );
-    // print(result.numberTrivia!.triviaText + 'second repo impl');
     return result;
   }
 

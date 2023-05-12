@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:number_trivia/features/number_trivia/presentation/constants/constants.dart';
 import 'package:number_trivia/features/number_trivia/presentation/riverpod/providers/loading_provider.dart';
+import 'package:number_trivia/features/number_trivia/presentation/riverpod/providers/network_info_provider.dart';
 import 'package:number_trivia/features/number_trivia/presentation/riverpod/providers/number_trivia_provider.dart';
+import 'package:number_trivia/features/number_trivia/presentation/riverpod/providers/server_failure_provider.dart';
 
 import 'riverpod/providers/number_trivia_with_trivia_provider.dart';
 
@@ -31,13 +34,20 @@ class _NumberTriviaPageViewState extends ConsumerState<NumberTriviaPageView> {
   Widget build(BuildContext context) {
     //final triviaState = ref.watch(numberTriviaStateProvider);
 
-    String absentText = 'Input a number';
+    final erroMessage = ref.watch(errorMessageProvider);
     final trivia = ref.watch(providerWithTrivia);
     final isLoading = ref.watch(loadingProvider);
+    final isConnected = ref.watch(networkInfoProvider);
+    String? networkMessage;
+    isConnected
+        ? networkMessage = ConstantStrings.networkError
+        : networkMessage = null;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Number Trivia'),
+        title: const Text(
+          ConstantStrings.appName,
+        ),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -48,10 +58,17 @@ class _NumberTriviaPageViewState extends ConsumerState<NumberTriviaPageView> {
             child: Padding(
               padding: const EdgeInsets.all(18.0),
               child: Center(
-                  child: Text(
-                trivia?.triviaText ?? absentText,
-                style: Theme.of(context).textTheme.headlineMedium,
-              )),
+                  child: isLoading
+                      ? const Center(
+                          child: Text(ConstantStrings.fetchingData),
+                        )
+                      : Text(
+                          erroMessage ??
+                              networkMessage ??
+                              trivia?.triviaText ??
+                              ConstantStrings.absentText,
+                          style: Theme.of(context).textTheme.headlineMedium,
+                        )),
             ),
           ),
           const SizedBox(
